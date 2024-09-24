@@ -39,3 +39,7 @@ func (gm *GameMap) PrintMap() {
 		fmt.Println(gm.board[i])
 	}	
 }
+
+
+
+
