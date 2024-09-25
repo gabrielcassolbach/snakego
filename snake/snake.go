@@ -1,7 +1,5 @@
 package snake 
 
-import "fmt"
-
 type Snake struct {
 	body []string
 }
@@ -17,11 +15,4 @@ func NewSnake() *Snake {
 func (snke *Snake) GrowSnake() {
 	snke.body = append(snke.body, "*")
 } 
-
-func (snke *Snake) PrintSnake() {
-	for i := 0; i < len(snke.body); i++{
-		fmt.Print(snke.body[i])
-	}
-}
-
 

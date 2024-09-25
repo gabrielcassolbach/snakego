@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"os/exec"
 	"os"
-	//"snakego/io"
 	"time"
-	"snakego/board"
-	"snakego/snake"
+	"snakego/game"
+	"fmt"
 )
 
 func clearScreen() {
@@ -16,18 +14,17 @@ func clearScreen() {
 	cmd.Run()
 }
 
-func gameLoop(mp *board.GameMap, snke *snake.Snake,  delay time.Duration) {
+func gameLoop(gme *game.Game, delay time.Duration) {
 	for {
 		fmt.Println("\t\t\t Snake Go")
-		mp.PrintMap()
+		gme.PrintGame()
 		time.Sleep(delay)
 		clearScreen()	
 	}
 }
 
 func main() {
-	snke := snake.NewSnake()  	
-	mp := board.CreateMap(30, 30) 	
-	go gameLoop(mp, snke,  100 * time.Millisecond)
+	gme := game.NewGame()
+	go gameLoop(gme,  50 * time.Millisecond)
 	for { }
 }

@@ -1,7 +1,5 @@
 package board
 
-import "fmt"
-
 type GameMap struct {
 	size_x int
 	size_y int
@@ -33,13 +31,3 @@ func CreateMap(size_x int, size_y int) *GameMap {
 	m.size_y = size_y	
 	return m
 }
-
-func (gm *GameMap) PrintMap() {
-	for i := 0; i < gm.size_x; i++ {
-		fmt.Println(gm.board[i])
-	}	
-}
-
-
-
-
