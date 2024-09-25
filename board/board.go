@@ -14,7 +14,7 @@ func setBoard(size_x int, size_y int) [][]string {
 		for j := 0; j < size_y; j++ {
 			if (j == 0 || j == (size_y - 1) || i == 0 || i == (size_x - 1)){
 				line = append(line, "#")
-			}else{
+			}else {
 				line = append(line, " ")
 			}
 		}
@@ -30,4 +30,8 @@ func CreateMap(size_x int, size_y int) *GameMap {
 	m.size_x = size_x
 	m.size_y = size_y	
 	return m
+}
+
+func (gm *GameMap) GetMap() [][]string {
+	return gm.board;
 }

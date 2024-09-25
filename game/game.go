@@ -7,17 +7,36 @@ import (
 )
 
 type Game struct {
-	board *board.GameMap 
+	gameMap *board.GameMap 
 	snke *snake.Snake
 }
 
 func NewGame() *Game {
 	gme := new(Game)
-	gme.board = board.CreateMap(50, 50)
+	gme.gameMap = board.CreateMap(30, 70)
 	gme.snke = snake.NewSnake()
 	return gme
 }
 
+func (game *Game) UpdateSnake() {
+
+}
+
+
 func (game *Game) PrintGame() {
-	fmt.Print(game.board)	
+	gmap := game.gameMap.GetMap()
+	x_cord := game.snke.GetX()
+	y_cord := game.snke.GetY()
+	
+	for i_x, i := range gmap {
+		fmt.Println("\t\t\t\t")
+		for i_y, j := range i {
+			if(i_x == x_cord && y_cord == i_y){
+				fmt.Printf(" %s", "*")
+			}else {
+				fmt.Printf(" %s", j)
+			}
+		}
+	}
+
 }

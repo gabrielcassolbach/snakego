@@ -5,8 +5,9 @@ import (
 	"os"
 	"time"
 	"snakego/game"
-	"fmt"
 )
+
+const fps = 100
 
 func clearScreen() {
 	cmd := exec.Command("clear")
@@ -16,7 +17,6 @@ func clearScreen() {
 
 func gameLoop(gme *game.Game, delay time.Duration) {
 	for {
-		fmt.Println("\t\t\t Snake Go")
 		gme.PrintGame()
 		time.Sleep(delay)
 		clearScreen()	
@@ -25,6 +25,6 @@ func gameLoop(gme *game.Game, delay time.Duration) {
 
 func main() {
 	gme := game.NewGame()
-	go gameLoop(gme,  50 * time.Millisecond)
+	go gameLoop(gme,  fps * time.Millisecond)
 	for { }
 }
