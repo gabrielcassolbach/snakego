@@ -1,8 +1,8 @@
 package snake 
 
 type Point struct {
-	x int
-	y int
+	Px int
+	Py int
 }
 
 type Snake struct {
@@ -42,7 +42,7 @@ func (snke *Snake) GetY() int {
 
 func (snke *Snake) QTop() Point {
 	snke.queue = snke.queue[1:]	
-	returm queue[0]
+	return snke.queue[0]
 }
 
 func (snke *Snake) GetQueueSize() int {

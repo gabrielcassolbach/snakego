@@ -65,7 +65,7 @@ func (game *Game) InsertIntoQueue() {
 	x := game.snke.GetX()
 	y := game.snke.GetY()
 	
-		
+	game.snke.Enqueue(snake.Point{x, y})			
 }
 
 func (game *Game) PrintGame() bool {
@@ -82,7 +82,12 @@ func (game *Game) PrintGame() bool {
 		game.playing = false
 		return false;
 	}
-			
+	
+	for game.snke.GetQueueSize() > 6 {
+		pt := game.snke.QTop()
+		gmap[pt.Px][pt.Py] = " "
+	}
+		
 	gmap[x_cord][y_cord] = "*"
 
 	for _, i := range gmap {
