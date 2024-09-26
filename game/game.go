@@ -7,16 +7,21 @@ import (
 	"fmt"
 )
 
+const height = 30
+const lenght = 70
+
 type Game struct {
 	gameMap *board.GameMap 
 	snke *snake.Snake
 	kboard *io.Keyboard
+	playing bool
 }
 
 func NewGame() *Game {
 	gme := new(Game)
-	gme.gameMap = board.CreateMap(30, 70)
-	gme.snke = snake.NewSnake()
+	gme.playing = true
+	gme.gameMap = board.CreateMap(height, lenght)
+	gme.snke = snake.NewSnake(height/2, lenght/2)
 	gme.kboard = io.NewKeyboard()
 	return gme
 }
@@ -49,34 +54,41 @@ func (game *Game) GameOver(x int, y int) bool {
 	limit_x := game.gameMap.GetSizeX()
 	limit_y := game.gameMap.GetSizeY()
 
-	if((x <= 0) || (x >= limit_x) || (y <= 0) || (y >= limit_y)) {	
-		return true
-	}	
+	return ((x <= 0) || (x >= limit_x-1) || (y <= 0) || (y >= limit_y-1))
+}
 
-	return false	
+func (game *Game) IsPlaying() bool {
+	return game.playing
+}
+
+func (game *Game) InsertIntoQueue() {
+	x := game.snke.GetX()
+	y := game.snke.GetY()
+	
+		
 }
 
 func (game *Game) PrintGame() bool {
 	gmap := game.gameMap.GetMap()
 	go game.InitKeyLoop()	
 	
+	game.InsertIntoQueue()
 	game.UpdateVariables()
 	
 	x_cord := game.snke.GetX()
 	y_cord := game.snke.GetY()
 
 	if(game.GameOver(x_cord, y_cord)){
+		game.playing = false
 		return false;
 	}
-			 
-	for i_x, i := range gmap {
-		fmt.Println("\t\t\t\t")
-		for i_y, j := range i {
-			if(i_x == x_cord && y_cord == i_y){
-				fmt.Printf(" %s", "*")
-			}else {
-				fmt.Printf(" %s", j)
-			}
+			
+	gmap[x_cord][y_cord] = "*"
+
+	for _, i := range gmap {
+		fmt.Println("\t")
+		for _, j := range i {
+			fmt.Printf(" %s", j)
 		}
 	}
 

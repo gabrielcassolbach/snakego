@@ -5,9 +5,10 @@ import (
 	"os"
 	"time"
 	"snakego/game"
+	"fmt"
 )
 
-const fps = 100
+const fps = 80
 
 func setBuffer() {
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
@@ -34,7 +35,8 @@ func main() {
 	gme := game.NewGame()
 	go gameLoop(gme,  fps * time.Millisecond)
 	defer exec.Command("stty", "-F", "/dev/tty", "echo").Run()
-	for { }
+	for gme.IsPlaying() { }
+	fmt.Println("\n\tGAME OVER")
 }
 
 
