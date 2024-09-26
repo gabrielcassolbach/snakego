@@ -20,6 +20,14 @@ func (snke *Snake) GrowSnake() {
 	snke.body = append(snke.body, "*")
 }
 
+func (snke *Snake) SetX(x int) {
+	snke.point_x = x
+}
+
+func (snke *Snake) SetY(y int) {
+	snke.point_y = y
+} 
+
 func (snke *Snake) GetX() int {
 	return snke.point_x
 } 

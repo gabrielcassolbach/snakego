@@ -32,6 +32,16 @@ func CreateMap(size_x int, size_y int) *GameMap {
 	return m
 }
 
+func (gm *GameMap) GetSizeX() int {
+	return gm.size_x
+}
+
+func (gm *GameMap) GetSizeY() int {
+	return gm.size_y
+}
+
 func (gm *GameMap) GetMap() [][]string {
 	return gm.board;
 }
+
+
