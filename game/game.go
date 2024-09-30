@@ -15,6 +15,7 @@ type Game struct {
 	gameMap *board.GameMap 
 	snke *snake.Snake
 	kboard *io.Keyboard
+	previousKey string
 	playing bool
 	hasFruit bool
 }
@@ -26,12 +27,33 @@ func NewGame() *Game {
 	gme.gameMap = board.CreateMap(height, lenght)
 	gme.snke = snake.NewSnake(height/2, lenght/2)
 	gme.kboard = io.NewKeyboard()
+	gme.previousKey = ""
 	return gme
+}
+
+func (game *Game) InitGame() string {
+	return game.kboard.GetKey()
 }
 
 func (game *Game) InitKeyLoop() {
 	game.kboard.AwaitKeyLoop()
 } 
+
+func (game *Game) adjustKey(key string) string {
+	if key == "a" && game.previousKey == "d" {
+		return game.previousKey
+	}
+	if key == "w" && game.previousKey == "s" {
+		return game.previousKey
+	}
+	if key == "s" && game.previousKey == "w" {
+		return game.previousKey
+	} 
+	if key == "d" && game.previousKey == "a" {
+		return game.previousKey
+	}
+	return key
+}	
 
 func (game *Game) UpdateVariables() {
 	key := game.kboard.GetKey()
@@ -39,8 +61,10 @@ func (game *Game) UpdateVariables() {
 	x := game.snke.GetX()
 	y := game.snke.GetY()
 
-	if (key == "a") {
-		game.snke.SetY(y - 1)	
+	key = game.adjustKey(key)
+
+	if (key == "a") {	
+		game.snke.SetY(y - 1)
 	}
 	if (key == "w") {
 		game.snke.SetX(x - 1)
@@ -51,6 +75,8 @@ func (game *Game) UpdateVariables() {
 	if (key == "s") {
 		game.snke.SetX(x + 1)
 	}
+
+	game.previousKey = key
 }
 
 func (game *Game) GameOver(x int, y int, board [][]string) bool {
@@ -95,9 +121,7 @@ func (game *Game) SetFruit(x int, y int, board [][]string) {
 }
 
 func (game *Game) PrintGame() bool {
-	gmap := game.gameMap.GetMap()
-	go game.InitKeyLoop()	
-	
+	gmap := game.gameMap.GetMap()	
 	game.InsertIntoQueue()
 	game.UpdateVariables()
 	
