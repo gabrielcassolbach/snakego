@@ -4,6 +4,7 @@ import (
 	"snakego/snake"
 	"snakego/board"
 	"snakego/io"
+	"math/rand/v2"
 	"fmt"
 )
 
@@ -15,11 +16,13 @@ type Game struct {
 	snke *snake.Snake
 	kboard *io.Keyboard
 	playing bool
+	hasFruit bool
 }
 
 func NewGame() *Game {
 	gme := new(Game)
 	gme.playing = true
+	gme.hasFruit = true
 	gme.gameMap = board.CreateMap(height, lenght)
 	gme.snke = snake.NewSnake(height/2, lenght/2)
 	gme.kboard = io.NewKeyboard()
@@ -50,9 +53,13 @@ func (game *Game) UpdateVariables() {
 	}
 }
 
-func (game *Game) GameOver(x int, y int) bool {
+func (game *Game) GameOver(x int, y int, board [][]string) bool {
 	limit_x := game.gameMap.GetSizeX()
 	limit_y := game.gameMap.GetSizeY()
+	
+	if board[x][y] == "*" {
+		return true
+	}
 
 	return ((x <= 0) || (x >= limit_x-1) || (y <= 0) || (y >= limit_y-1))
 }
@@ -68,6 +75,25 @@ func (game *Game) InsertIntoQueue() {
 	game.snke.Enqueue(snake.Point{x, y})			
 }
 
+func validPos(x int, y int, board [][]string) bool {
+	return board[x][y] == " "
+}
+
+func (game *Game) SetFruit(x int, y int, board [][]string) {
+	var new_fruit bool
+	new_fruit = false
+
+	for !new_fruit {
+		p_x := rand.IntN(game.gameMap.GetSizeX())
+		p_y := rand.IntN(game.gameMap.GetSizeY())
+		if validPos(p_x, p_y, board) {
+			game.gameMap.SetFruitInMap(p_x, p_y)
+			new_fruit = true
+		}
+	}
+	game.hasFruit = true
+}
+
 func (game *Game) PrintGame() bool {
 	gmap := game.gameMap.GetMap()
 	go game.InitKeyLoop()	
@@ -78,12 +104,21 @@ func (game *Game) PrintGame() bool {
 	x_cord := game.snke.GetX()
 	y_cord := game.snke.GetY()
 
-	if(game.GameOver(x_cord, y_cord)){
+	if(gmap[x_cord][y_cord] == "$"){
+		game.hasFruit = false
+		game.snke.GrowSnake()
+	}
+	
+	if(!game.hasFruit){
+		game.SetFruit(x_cord, y_cord, gmap)
+	}
+
+	if(game.GameOver(x_cord, y_cord, gmap)){
 		game.playing = false
 		return false;
 	}
 	
-	for game.snke.GetQueueSize() > 6 {
+	for game.snke.GetQueueSize() > game.snke.GetSnakeSize() {
 		pt := game.snke.QTop()
 		gmap[pt.Px][pt.Py] = " "
 	}

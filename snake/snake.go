@@ -6,6 +6,7 @@ type Point struct {
 }
 
 type Snake struct {
+	snake_len int
 	point_x int 
 	point_y int
 	queue []Point
@@ -17,6 +18,7 @@ func NewSnake(x int, y int) *Snake {
 	s.queue = body
 	s.point_x = x
 	s.point_y = y
+	s.snake_len = 1
 	return s
 }
 
@@ -35,6 +37,14 @@ func (snke *Snake) SetY(y int) {
 func (snke *Snake) GetX() int {
 	return snke.point_x
 } 
+
+func (snke *Snake) GetSnakeSize() int {
+	return snke.snake_len
+}
+
+func (snke *Snake) GrowSnake() {
+	snke.snake_len = snke.snake_len + 1
+}
 
 func (snke *Snake) GetY() int {
 	return snke.point_y

@@ -14,7 +14,9 @@ func setBoard(size_x int, size_y int) [][]string {
 		for j := 0; j < size_y; j++ {
 			if (j == 0 || j == (size_y - 1) || i == 0 || i == (size_x - 1)){
 				line = append(line, "#")
-			}else {
+			}else if(j == size_y - 5 && i == size_x - 7) {
+				line = append(line, "$")
+			}else{
 				line = append(line, " ")
 			}
 		}
@@ -43,5 +45,10 @@ func (gm *GameMap) GetSizeY() int {
 func (gm *GameMap) GetMap() [][]string {
 	return gm.board;
 }
+
+func (gm *GameMap) SetFruitInMap(px int, py int) {
+	gm.board[px][py] = "$"
+}
+
 
 

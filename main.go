@@ -23,6 +23,7 @@ func clearScreen() {
 
 func gameLoop (gme *game.Game, delay time.Duration) {
 	running := true
+	
 	for running {
 		running = gme.PrintGame()
 		time.Sleep(delay)
